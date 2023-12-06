@@ -1,3 +1,5 @@
+//=> kullanıcı işlemleri için http yönlendirme ayarları
+
 const express = require('express');
 const { register, login, logout, forgotPassword, resetPassword, userDetail} = require('../controllers/user.js');
 const { reset } = require('nodemon');

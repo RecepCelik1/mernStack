@@ -1,3 +1,5 @@
+//=> genel geçer bir düğme oluşturdum onClick ve düğme name parametresi dışarıdan gelicek şekilde
+
 import React from "react";
 
 const Button = ({name, onClick}) => {

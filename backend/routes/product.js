@@ -1,3 +1,5 @@
+//=> routes klasörü
+
 const express = require("express")
 const {allProducts, detailProducts, createProduct, deleteProduct, updateProduct, createReview, adminProducts} = require('../controllers/product.js');
 const { authenticationMid, roleChecked } = require("../middleware/auth.js");

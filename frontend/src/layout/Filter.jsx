@@ -11,8 +11,11 @@ const Filter = ({setPrice, setRating, setCategory}) => {
         <div className="w-[200px] mt-3 p-1">
             <div>Filtreleme</div>
             <div className="flex items-center gap-2">
-                <input onChange={e => setPrice(prev => ({...prev, min: e.target.value}))} className="border w-16 p-1 outline-none my-2" type="number" placeholder="Min"/>
-                <input onChange={e => setPrice(prev => ({...prev, max: e.target.value}))} className="border w-16 p-1 outline-none my-2" type="number" placeholder="Max"/>
+
+            <input onChange={e => setPrice(prev => ({...prev, min: parseFloat(e.target.value)}))} className="border w-16 p-1 outline-none my-2" type="number" placeholder="Min"/>
+            <input onChange={e => setPrice(prev => ({...prev, max: parseFloat(e.target.value)}))} className="border w-16 p-1 outline-none my-2" type="number" placeholder="Max"/>
+
+
             </div>
             <div className="my-2">Kategori</div>
             {

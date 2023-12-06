@@ -1,11 +1,17 @@
+//=> mongoDB den gelen dataların filtrelendiği kısım. Bu kısımdan şüpheliyim
+
+
 class ProductFilter {
-    constructor(query, queryStr){
-        this.query = query
+
+    constructor(query, queryStr){ //=> query -> mongoDB sorgusu, queryStr -> filtreleme parametrelerini içeren nesne
+        this.query = query 
         this.queryStr = queryStr
     }
 
-    search(){
-        const keyword = this.queryStr.keyword ? {
+
+
+    search(){ //=> girilen parametrelere göre arama yapma kısmı bunun için $regex kullanırız
+        const keyword = this.queryStr.keyword ? { 
             name: {
                 $regex : this.queryStr.keyword,
                 $options : "i"
@@ -14,8 +20,12 @@ class ProductFilter {
         this.query = this.query.find({...keyword})
         return this;
     }
-    filter(){
-        const queryCopy = {...this.queryStr};
+
+
+
+    filter(){ //=> filtreleme metodu, parametreleri kullanarak mongoDB sorgusunu filtreler gerekli alanları filtreleme nedeniyle siler
+                    // geri kalan parametreleri JSON haline getirip sorgulamaya ekler
+        const queryCopy = {...this.queryStr}; 
         const deleteArea = ["keyword", "page", "limit"];
         deleteArea.forEach(item => delete queryCopy[item])
 
@@ -25,7 +35,10 @@ class ProductFilter {
         this.query = this.query.find(JSON.parse(queryStr))
         return this;
     }
-    pagination(resultPerPage){
+
+
+
+    pagination(resultPerPage){ //=> sayfalama metodu resultperpage adı üstünde
         const activePage = this.queryStr.page || 1
         const skip = resultPerPage * (activePage - 1)
         this.query = this.query.limit(resultPerPage).skip(skip)

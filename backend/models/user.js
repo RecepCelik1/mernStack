@@ -1,3 +1,5 @@
+//=> aynı şekilde bu defa userların databasede kaydedilme şeması
+
 const mongoose = require('mongoose')
 
 const userSchema = new mongoose.Schema({

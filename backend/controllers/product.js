@@ -1,18 +1,26 @@
+//burası ürünlerle ilgili işlemlerin yapıldığı component, ürün ekleme-çıkarma fln, filtreleme databaseden ürünleri çekme gibi
+
 const Product = require('../models/product.js');
 const ProductFilter = require('../utils/productFilter.js');
 const cloudinary = require('cloudinary').v2
 
-const allProducts = async(req, res) => {
+
+
+const allProducts = async(req, res) => { //=> burada bütün ürünleri çekip filtreleme fonksiyonunu import ettiğimiz kısım
+    
     const resultPerPage = 10;
-    const productFilter = new ProductFilter(Product.find(), req.query).search().filter().pagination(resultPerPage)//burada hata olabilir query parametre ama text olarak görünüyor
+    const productFilter = new ProductFilter(Product.find(), req.query).search().filter().pagination(resultPerPage)
     const products = await productFilter.query;
 
     res.status(200).json({
         products
     })
 }
+
+
+
 //requires admin
-const adminProducts = async (req, res, next) => {
+const adminProducts = async (req, res, next) => { //=> burası admin productsları çektiğimiz kısım find fonksiyonu ile
     const products = await Product.find();
 
     res.status(200).json({
@@ -20,7 +28,9 @@ const adminProducts = async (req, res, next) => {
     })
 }
 
-const detailProducts = async(req, res) => {
+
+
+const detailProducts = async(req, res) => { //=> burası ürünlerin _id numaralarına göre detaylarını çektiğimiz kısım sorunsuzca çalışıyor
     const product = await Product.findById(req.params.id);
 
     res.status(200).json({
@@ -28,8 +38,10 @@ const detailProducts = async(req, res) => {
     })
 }
 
+
+
 //requires admin
-const createProduct = async(req, res, next) => {
+const createProduct = async(req, res, next) => { //=> ürün oluşturma kısmı
     let images = []
     if(typeof req.body.images === "string"){
         images.push(req.body.images)
@@ -59,8 +71,11 @@ const createProduct = async(req, res, next) => {
         product
     })
 }
+
+
+
 //requires admin
-const deleteProduct = async(req, res, next) => {
+const deleteProduct = async(req, res, next) => { //=> ürün silme kısmı
     const product = await Product.findById(req.params.id);
 
     for (let i = 0; i < product.images.length; i++) {   //=> bu döngüde de sileceğimiz ürünün resimlerini teker teker sildik
@@ -73,8 +88,11 @@ const deleteProduct = async(req, res, next) => {
         message: "ürün başarıyla yok edilmiştir tebrikler"
     })
 }
+
+
+
 //requires admin
-const updateProduct = async(req, res, next) => {
+const updateProduct = async(req, res, next) => { //=> databasedeki ürünleri düzenlediğimiz kısım
     const product = await Product.findById(req.params.id);
 
     let images = []
@@ -105,14 +123,16 @@ const updateProduct = async(req, res, next) => {
 
     req.body.images = allImage
     
-     product = await Product.findByIdAndUpdate(req.params.id, req.body, {new: true, runValidators: true})
+     product = await Product.findByIdAndUpdate(req.params.id, req.body, {new: true, runValidators: true}) //findByIdAndUpdate kullanıyoruz
 
     res.status(201).json({
         product
     })
 }
 
-const createReview = async (req, res, next) => { //=> next adında yeni bir parametre tanımladık ve requires admin gerektiren tüm durumlarda kullandık.
+
+
+const createReview = async (req, res, next) => { //=> next adında yeni bir parametre tanımladık ve requires admin gerektiren tüm durumlarda kullandık. ürüne yorum ekleme kısmı
 
     const {productId, comment, rating} = req.body;
 
@@ -122,6 +142,7 @@ const createReview = async (req, res, next) => { //=> next adında yeni bir para
         comment,
         rating: Number(rating)
     }
+
     const product = await Product.findById(productId);
 
     product.reviews.push(review)

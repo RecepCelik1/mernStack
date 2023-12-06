@@ -1,7 +1,10 @@
+//=> ürünler kısmının mongoDB veritabanındaki şema yapısı
+
 const mongoose = require('mongoose');
 
 
 const productSchema = new mongoose.Schema({
+
     name: {
         type: String,
         required: true
@@ -39,11 +42,13 @@ const productSchema = new mongoose.Schema({
             }
         }
     ],
+
     user: {
         type: mongoose.Schema.ObjectId,
         ref:"User",
         required: true
     },
+
     reviews: [
         {
             user: {
@@ -65,6 +70,7 @@ const productSchema = new mongoose.Schema({
             }
         }
     ],
-}, {timestamps: true});
+
+}, {timestamps: true}); //=> oluşturma ve güncelleme tarihleri kaydedilir.
 
 module.exports = mongoose.model('Product', productSchema)
